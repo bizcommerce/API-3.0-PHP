@@ -5,18 +5,17 @@
       "Cielo": "src"
     }
   },
-  "name": "arcoinformatica/api-3.0-php",
+  "name": "bizcommerce/cielo-api-3.0",
   "description": "Fork da integração com a API 3.0 da Cielo",
   "license": "MIT",
   "type": "library",
   "require": {
     "php": ">=5.6",
     "ext-curl": "*",
-    "ext-json": "*",
-    "psr/log":"^1.1"
+    "ext-json": "*"
   },
   "suggest": {
     "monolog/monolog": "Allows more advanced logging of the application flow"
   },
-  "homepage": "https://github.com/arcoinformatica/API-3.0-PHP"
+  "homepage": "https://github.com/DeveloperCielo/API-3.0-PHP"
 }
