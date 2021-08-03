@@ -5,7 +5,7 @@
       "Cielo": "src"
     }
   },
-  "name": "bizcommerce/cielo-api-3.0",
+  "name": "bizcommerce/cielo-commerce",
   "description": "Fork da integração com a API 3.0 da Cielo",
   "license": "MIT",
   "type": "library",
