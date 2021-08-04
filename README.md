@@ -29,7 +29,7 @@ Se já possui um arquivo `composer.json`, basta adicionar a seguinte dependênci
 
 ```json
 "require": {
-    "developercielo/api-3.0-php": "^1.0"
+    "bizcommerce/cielo-commerce": "^1.0"
 }
 ```
 
@@ -42,7 +42,7 @@ composer install
 Alternativamente, você pode executar diretamente em seu terminal:
 
 ```
-composer require "developercielo/api-3.0-php"
+composer require "bizcommerce/cielo-commerce"
 ```
 
 ## Produtos e Bandeiras suportadas e suas constantes
