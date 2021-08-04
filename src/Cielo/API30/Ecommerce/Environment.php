@@ -1,5 +1,4 @@
 <?php
-
 namespace Cielo\API30\Ecommerce;
 
 /**
@@ -21,7 +20,7 @@ class Environment implements \Cielo\API30\Environment
      */
     private function __construct($api, $apiQuery)
     {
-        $this->api      = $api;
+        $this->api = $api;
         $this->apiQuery = $apiQuery;
     }
 
@@ -30,7 +29,7 @@ class Environment implements \Cielo\API30\Environment
      */
     public static function sandbox()
     {
-        $api      = 'https://apisandbox.cieloecommerce.cielo.com.br/';
+        $api = 'https://apisandbox.cieloecommerce.cielo.com.br/';
         $apiQuery = 'https://apiquerysandbox.cieloecommerce.cielo.com.br/';
 
         return new Environment($api, $apiQuery);
@@ -41,7 +40,7 @@ class Environment implements \Cielo\API30\Environment
      */
     public static function production()
     {
-        $api      = 'https://api.cieloecommerce.cielo.com.br/';
+        $api = 'https://api.cieloecommerce.cielo.com.br/';
         $apiQuery = 'https://apiquery.cieloecommerce.cielo.com.br/';
 
         return new Environment($api, $apiQuery);

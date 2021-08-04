@@ -1,5 +1,4 @@
 <?php
-
 namespace Cielo\API30\Ecommerce;
 
 /**
@@ -27,6 +26,36 @@ class Sale implements \JsonSerializable
     }
 
     /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    /**
+     * @param \stdClass $data
+     */
+    public function populate(\stdClass $data)
+    {
+        $dataProps = get_object_vars($data);
+
+        if (isset($dataProps['Customer'])) {
+            $this->customer = new \Cielo\API30\Ecommerce\Customer();
+            $this->customer->populate($data->Customer);
+        }
+
+        if (isset($dataProps['Payment'])) {
+            $this->payment = new \Cielo\API30\Ecommerce\Payment();
+            $this->payment->populate($data->Payment);
+        }
+
+        if (isset($dataProps['MerchantOrderId'])) {
+            $this->merchantOrderId = $data->MerchantOrderId;
+        }
+    }
+
+    /**
      * @param $json
      *
      * @return Sale
@@ -39,36 +68,6 @@ class Sale implements \JsonSerializable
         $sale->populate($object);
 
         return $sale;
-    }
-
-    /**
-     * @param \stdClass $data
-     */
-    public function populate(\stdClass $data)
-    {
-        $dataProps = get_object_vars($data);
-
-        if (isset($dataProps['Customer'])) {
-            $this->customer = new Customer();
-            $this->customer->populate($data->Customer);
-        }
-
-        if (isset($dataProps['Payment'])) {
-            $this->payment = new Payment();
-            $this->payment->populate($data->Payment);
-        }
-
-        if (isset($dataProps['MerchantOrderId'])) {
-            $this->merchantOrderId = $data->MerchantOrderId;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     /**
@@ -86,7 +85,7 @@ class Sale implements \JsonSerializable
     }
 
     /**
-     * @param     $amount
+     * @param $amount
      * @param int $installments
      *
      * @return Payment
@@ -116,7 +115,6 @@ class Sale implements \JsonSerializable
     public function setMerchantOrderId($merchantOrderId)
     {
         $this->merchantOrderId = $merchantOrderId;
-
         return $this;
     }
 
@@ -136,7 +134,6 @@ class Sale implements \JsonSerializable
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
-
         return $this;
     }
 
@@ -154,7 +151,11 @@ class Sale implements \JsonSerializable
     public function setPayment(Payment $payment)
     {
         $this->payment = $payment;
-
         return $this;
+    }
+
+    public function setAsDebitCard(){
+        $this->getCustomer()->setAsDebitCard();
+        $this->getPayment()->setAsDebitCard();
     }
 }

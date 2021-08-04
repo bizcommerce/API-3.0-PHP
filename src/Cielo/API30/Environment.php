@@ -1,5 +1,4 @@
 <?php
-
 namespace Cielo\API30;
 
 /**

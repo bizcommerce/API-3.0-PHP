@@ -1,18 +1,17 @@
 <?php
-
 namespace Cielo\API30\Ecommerce\Request;
 
-use Cielo\API30\Ecommerce\Payment;
+use Cielo\API30\Ecommerce\Request\AbstractSaleRequest;
 use Cielo\API30\Environment;
 use Cielo\API30\Merchant;
-use Psr\Log\LoggerInterface;
+use Cielo\API30\Ecommerce\Payment;
 
 /**
  * Class UpdateSaleRequest
  *
  * @package Cielo\API30\Ecommerce\Request
  */
-class UpdateSaleRequest extends AbstractRequest
+class UpdateSaleRequest extends AbstractSaleRequest
 {
 
     private $environment;
@@ -23,32 +22,29 @@ class UpdateSaleRequest extends AbstractRequest
 
     private $amount;
 
-	/**
-	 * UpdateSaleRequest constructor.
-	 *
-	 * @param Merchant $type
-	 * @param Merchant $merchant
-	 * @param Environment $environment
-	 * @param LoggerInterface|null $logger
-	 */
-    public function __construct($type, Merchant $merchant, Environment $environment, LoggerInterface $logger = null)
+    /**
+     * UpdateSaleRequest constructor.
+     *
+     * @param Merchant $type
+     * @param Merchant $merchant
+     * @param Environment $environment
+     */
+    public function __construct($type, Merchant $merchant, Environment $environment)
     {
-        parent::__construct($merchant, $logger);
+        parent::__construct($merchant);
 
         $this->environment = $environment;
-        $this->type        = $type;
+        $this->type = $type;
     }
 
     /**
      * @param $paymentId
      *
      * @return null
-     * @throws \Cielo\API30\Ecommerce\Request\CieloRequestException
-     * @throws \RuntimeException
      */
     public function execute($paymentId)
     {
-        $url    = $this->environment->getApiUrl() . '1/sales/' . $paymentId . '/' . $this->type;
+        $url = $this->environment->getApiUrl() . '1/sales/' . $paymentId . '/' . $this->type;
         $params = [];
 
         if ($this->amount != null) {
@@ -90,7 +86,6 @@ class UpdateSaleRequest extends AbstractRequest
     public function setServiceTaxAmount($serviceTaxAmount)
     {
         $this->serviceTaxAmount = $serviceTaxAmount;
-
         return $this;
     }
 
@@ -110,7 +105,6 @@ class UpdateSaleRequest extends AbstractRequest
     public function setAmount($amount)
     {
         $this->amount = $amount;
-
         return $this;
     }
 }

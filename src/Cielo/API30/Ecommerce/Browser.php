@@ -1,43 +1,24 @@
 <?php
-
 namespace Cielo\API30\Ecommerce;
-
-use Cielo\API30\Ecommerce\CieloSerializable;
 
 /**
  * Class Browser
  *
  * @package Cielo\API30\Ecommerce
-*/
-class Browser implements \JsonSerializable, CieloSerializable
+ */
+class Browser implements \JsonSerializable
 {
-    /** @var string $cookiesAccepted */
+
+    private $browserFingerprint;
+
     private $cookiesAccepted;
 
-    /** @var string $email */
-    private $email;
-
-    /** @var string $hostName */
-    private $hostName;
-
-    /** @var string $ipAddress */
     private $ipAddress;
 
-    /** @var string $type */
-    private $type;
-
-     /**
-     * Browser constructor.
-     *
-     * @param null
-    */
-    public function __construct()
-    {
-    }
 
     /**
      * @return array
-    */
+     */
     public function jsonSerialize()
     {
         return get_object_vars($this);
@@ -45,79 +26,36 @@ class Browser implements \JsonSerializable, CieloSerializable
 
     /**
      * @param \stdClass $data
-    */
+     */
     public function populate(\stdClass $data)
     {
-        $this->cookiesAccepted   = isset($data->CookiesAccepted) ? $data->CookiesAccepted : null;
-        $this->email             = isset($data->Email) ? $data->Email : null;
-        $this->hostName          = isset($data->HostName) ? $data->HostName : null;
-        $this->ipAddress         = isset($data->IpAddress) ? $data->IpAddress : null;
-        $this->type              = isset($data->Type) ? $data->Type : null;
+        $this->browserFingerprint = isset($data->BrowserFingerPrint)? $data->BrowserFingerPrint: null;
+        $this->cookiesAccepted = isset($data->CookiesAccepted)? $data->CookiesAccepted: null;
+        $this->ipAddress = isset($data->IpAddress)? $data->IpAddress: null;
     }
 
     /**
      * @return mixed
-    */
-    public function getCookiesAccepted()
+     */
+    public function getBrowserFingerPrint()
     {
-        return $this->cookiesAccepted;
+        return $this->browserFingerprint;
     }
 
     /**
-     * @param $cookiesAccepted
+     * @param $browserFingerPrint
      *
      * @return $this
-    */
-    public function setCookiesAccepted($cookiesAccepted)
+     */
+    public function setBrowserFingerPrint($browserFingerPrint)
     {
-        $this->cookiesAccepted = $cookiesAccepted;
-
+        $this->browserFingerprint = $browserFingerPrint;
         return $this;
     }
 
     /**
      * @return mixed
-    */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param $email
-     *
-     * @return $this
-    */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-    */
-    public function getHostName()
-    {
-        return $this->hostName;
-    }
-
-    /**
-     * @param $hostName
-     *
-     * @return $this
-    */
-    public function setHostName($hostName)
-    {
-        $this->hostName = $hostName;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-    */
+     */
     public function getIpAddress()
     {
         return $this->ipAddress;
@@ -127,31 +65,29 @@ class Browser implements \JsonSerializable, CieloSerializable
      * @param $ipAddress
      *
      * @return $this
-    */
+     */
     public function setIpAddress($ipAddress)
     {
         $this->ipAddress = $ipAddress;
-
         return $this;
     }
 
     /**
      * @return mixed
-    */
-    public function getType()
+     */
+    public function getCookiesAccepted()
     {
-        return $this->type;
+        return $this->sequenceCriteria;
     }
 
     /**
-     * @param $type
+     * @param $cookiesAccepted
      *
      * @return $this
-    */
-    public function setType($type)
+     */
+    public function setCookiesAccepted($cookiesAccepted)
     {
-        $this->type = $type;
-
+        $this->cookiesAccepted = $cookiesAccepted;
         return $this;
     }
 }

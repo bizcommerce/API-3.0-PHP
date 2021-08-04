@@ -1,14 +1,11 @@
 <?php
-
 namespace Cielo\API30\Ecommerce;
 
-use Cielo\API30\Ecommerce\Request\CreateSaleRequest;
-use Cielo\API30\Ecommerce\Request\QueryRecurrentPaymentRequest;
-use Cielo\API30\Ecommerce\Request\QuerySaleRequest;
-use Cielo\API30\Ecommerce\Request\TokenizeCardRequest;
-use Cielo\API30\Ecommerce\Request\UpdateSaleRequest;
 use Cielo\API30\Merchant;
-use Psr\Log\LoggerInterface;
+use Cielo\API30\Ecommerce\Request\CreateSaleRequest;
+use Cielo\API30\Ecommerce\Request\QuerySaleRequest;
+use Cielo\API30\Ecommerce\Request\UpdateSaleRequest;
+use Cielo\API30\Ecommerce\Request\QueryRecurrentPaymentRequest;
 
 /**
  * The Cielo Ecommerce SDK front-end;
@@ -20,28 +17,24 @@ class CieloEcommerce
 
     private $environment;
 
-    private $logger;
-
-	/**
-	 * Create an instance of CieloEcommerce choosing the environment where the
-	 * requests will be send
-	 *
-	 * @param Merchant $merchant
-	 *            The merchant credentials
-	 * @param Environment environment
-	 *            The environment: {@link Environment::production()} or
-	 *            {@link Environment::sandbox()}
-	 * @param LoggerInterface|null $logger
-	 */
-    public function __construct(Merchant $merchant, Environment $environment = null, LoggerInterface $logger = null)
+    /**
+     * Create an instance of CieloEcommerce choosing the environment where the
+     * requests will be send
+     *
+     * @param Merchant $merchant
+     *            The merchant credentials
+     * @param Environment environment
+     *            The environment: {@link Environment::production()} or
+     *            {@link Environment::sandbox()}
+     */
+    public function __construct(Merchant $merchant, Environment $environment = null)
     {
         if ($environment == null) {
             $environment = Environment::production();
         }
 
-        $this->merchant    = $merchant;
+        $this->merchant = $merchant;
         $this->environment = $environment;
-        $this->logger      = $logger;
     }
 
     /**
@@ -61,7 +54,7 @@ class CieloEcommerce
      */
     public function createSale(Sale $sale)
     {
-        $createSaleRequest = new CreateSaleRequest($this->merchant, $this->environment, $this->logger);
+        $createSaleRequest = new CreateSaleRequest($this->merchant, $this->environment);
 
         return $createSaleRequest->execute($sale);
     }
@@ -82,7 +75,7 @@ class CieloEcommerce
      */
     public function getSale($paymentId)
     {
-        $querySaleRequest = new QuerySaleRequest($this->merchant, $this->environment, $this->logger);
+        $querySaleRequest = new QuerySaleRequest($this->merchant, $this->environment);
 
         return $querySaleRequest->execute($paymentId);
     }
@@ -104,7 +97,7 @@ class CieloEcommerce
      */
     public function getRecurrentPayment($recurrentPaymentId)
     {
-        $queryRecurrentPaymentRequest = new queryRecurrentPaymentRequest($this->merchant, $this->environment, $this->logger);
+        $queryRecurrentPaymentRequest = new queryRecurrentPaymentRequest($this->merchant, $this->environment);
 
         return $queryRecurrentPaymentRequest->execute($recurrentPaymentId);
     }
@@ -112,7 +105,7 @@ class CieloEcommerce
     /**
      * Cancel a Sale on Cielo by paymentId and speficying the amount
      *
-     * @param string  $paymentId
+     * @param string $paymentId
      *            The paymentId to be queried
      * @param integer $amount
      *            Order value in cents
@@ -127,7 +120,7 @@ class CieloEcommerce
      */
     public function cancelSale($paymentId, $amount = null)
     {
-        $updateSaleRequest = new UpdateSaleRequest('void', $this->merchant, $this->environment, $this->logger);
+        $updateSaleRequest = new UpdateSaleRequest('void', $this->merchant, $this->environment);
 
         $updateSaleRequest->setAmount($amount);
 
@@ -138,7 +131,7 @@ class CieloEcommerce
      * Capture a Sale on Cielo by paymentId and specifying the amount and the
      * serviceTaxAmount
      *
-     * @param string  $paymentId
+     * @param string $paymentId
      *            The paymentId to be captured
      * @param integer $amount
      *            Amount of the authorization to be captured
@@ -157,23 +150,11 @@ class CieloEcommerce
      */
     public function captureSale($paymentId, $amount = null, $serviceTaxAmount = null)
     {
-        $updateSaleRequest = new UpdateSaleRequest('capture', $this->merchant, $this->environment, $this->logger);
+        $updateSaleRequest = new UpdateSaleRequest('capture', $this->merchant, $this->environment);
 
         $updateSaleRequest->setAmount($amount);
         $updateSaleRequest->setServiceTaxAmount($serviceTaxAmount);
 
         return $updateSaleRequest->execute($paymentId);
-    }
-
-    /**
-     * @param CreditCard $card
-     *
-     * @return CreditCard
-     */
-    public function tokenizeCard(CreditCard $card)
-    {
-        $tokenizeCardRequest = new TokenizeCardRequest($this->merchant, $this->environment, $this->logger);
-
-        return $tokenizeCardRequest->execute($card);
     }
 }

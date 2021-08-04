@@ -1,5 +1,4 @@
 <?php
-
 namespace Cielo\API30\Ecommerce\Request;
 
 /**
@@ -16,8 +15,8 @@ class CieloRequestException extends \Exception
      * CieloRequestException constructor.
      *
      * @param string $message
-     * @param int    $code
-     * @param null   $previous
+     * @param int $code
+     * @param null $previous
      */
     public function __construct($message, $code, $previous = null)
     {
@@ -40,7 +39,6 @@ class CieloRequestException extends \Exception
     public function setCieloError(CieloError $cieloError)
     {
         $this->cieloError = $cieloError;
-
         return $this;
     }
 }

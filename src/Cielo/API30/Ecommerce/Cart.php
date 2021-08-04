@@ -1,103 +1,48 @@
 <?php
-
 namespace Cielo\API30\Ecommerce;
 
-use Cielo\API30\Ecommerce\CieloSerializable;
-use Cielo\API30\Ecommerce\Items;
 /**
  * Class Cart
  *
  * @package Cielo\API30\Ecommerce
  */
-class Cart implements \JsonSerializable, CieloSerializable
+class Cart implements \JsonSerializable
 {
-    /** @var string $isGift */
+
+    private $items = array();
+
     private $isGift;
 
-    /** @var string $returnsAccepted */
     private $returnsAccepted;
 
-    /** @var string $items */
-    private $items;
-
-    /**
-     * Cart constructor.
-     *
-     * @param null
-    */
-    public function __construct()
-    {
-    }
 
     /**
      * @return array
-    */
+     */
     public function jsonSerialize()
     {
         return get_object_vars($this);
     }
-
     /**
      * @param \stdClass $data
-    */
+     */
     public function populate(\stdClass $data)
     {
-        $this->isGift           = isset($data->IsGift) ? $data->IsGift : null;
-        $this->returnsAccepted  = isset($data->ReturnsAccepted) ? $data->ReturnsAccepted : null;
-        
-        if (isset($data->Items)) {
-            foreach($data->Items as $item){
-                $itemsInstance = new Items();
-                $itemsInstance->populate($item);
+        $this->isGift = isset($data->isGift)? $data->IsGift: null;
+        $this->returnsAccepted = isset($data->ReturnsAccepted)? $data->ReturnsAccepted: null;
 
-                $this->items [] = $itemsInstance;
+        if(isset($data->Items)) {
+            foreach($data->Items as $item){
+                $newItem = new Item();
+                $newItem->populate($item);
+                $this->items[] = $newItem;
             }
         }
     }
 
     /**
      * @return mixed
-    */
-    public function getIsGift()
-    {
-        return $this->isGift;
-    }
-
-    /**
-     * @param $isGift
-     *
-     * @return $this
-    */
-    public function setIsGift($isGift)
-    {
-        $this->isGift = $isGift;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-    */
-    public function getReturnsAccepted()
-    {
-        return $this->returnsAccepted;
-    }
-
-    /**
-     * @param $returnsAccepted
-     *
-     * @return $this
-    */
-    public function setReturnsAccepted($returnsAccepted)
-    {
-        $this->returnsAccepted = $returnsAccepted;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-    */
+     */
     public function getItems()
     {
         return $this->items;
@@ -107,11 +52,29 @@ class Cart implements \JsonSerializable, CieloSerializable
      * @param $items
      *
      * @return $this
-    */
+     */
     public function setItems($items)
     {
         $this->items = $items;
+        return $this;
+    }
 
+    /**
+     * @param $name
+     * @param $quantity
+     * @param $sku
+     * @param $unitPrice
+     * @return $this
+     */
+    public function addNewItem($name,$quantity,$sku,$unitPrice)
+    {
+        $item = new Item();
+        $item->setName($name);
+        $item->setQuantity($quantity);
+        $item->setSku($sku);
+        $item->setUnitPrice($unitPrice);
+
+        $this->items[] = $item;
         return $this;
     }
 }
