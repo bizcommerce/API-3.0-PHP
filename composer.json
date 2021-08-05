@@ -4,7 +4,8 @@
   "description": "Fork da integração com a API 3.0 da Cielo",
   "license": "MIT",
   "type": "library",
-  "minimum-stability": "dev",  
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": ">=5.6"
   },
