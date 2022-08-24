@@ -111,7 +111,10 @@ abstract class AbstractSaleRequest
                 $response = $this->unserialize($responseBody);
                 break;
             case 400:
-                $exception = $responseBody;
+                $cieloError = new CieloError($responseBody, $statusCode);
+                $exception = new CieloRequestException('Request Error', $statusCode);
+                $exception->setCieloError($cieloError);
+
                 if ($responseBody) {
                     $response = json_decode($responseBody);
                     if (is_iterable($response)) {
