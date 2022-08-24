@@ -60,7 +60,6 @@ abstract class AbstractSaleRequest
         ];
 
         $curl = curl_init($url);
-
         curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 
@@ -76,7 +75,6 @@ abstract class AbstractSaleRequest
 
         if ($sale !== null) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($sale));
-
             $headers[] = 'Content-Type: application/json';
         } else {
             $headers[] = 'Content-Length: 0';
@@ -107,23 +105,23 @@ abstract class AbstractSaleRequest
      */
     protected function readResponse($statusCode, $responseBody)
     {
-        $unserialized = null;
-
         switch ($statusCode) {
             case 200:
             case 201:
-                $unserialized = $this->unserialize($responseBody);
+                $response = $this->unserialize($responseBody);
                 break;
             case 400:
-                $exception = null;
-                $response = json_decode($responseBody);
-
-                foreach ($response as $error) {
-                    $cieloError = new CieloError($error->Message, $error->Code);
-                    $exception = new CieloRequestException('Request Error', $statusCode, $exception);
-                    $exception->setCieloError($cieloError);
+                $exception = $responseBody;
+                if ($responseBody) {
+                    $response = json_decode($responseBody);
+                    if (is_iterable($response)) {
+                        foreach ($response as $error) {
+                            $cieloError = new CieloError($error->Message, $error->Code);
+                            $exception = new CieloRequestException('Request Error', $statusCode, $exception);
+                            $exception->setCieloError($cieloError);
+                        }
+                    }
                 }
-
                 throw $exception;
             case 404:
                 throw new CieloRequestException('Resource not found', 404, null);
@@ -131,6 +129,6 @@ abstract class AbstractSaleRequest
                 throw new CieloRequestException('Unknown status', $statusCode);
         }
 
-        return $unserialized;
+        return $response;
     }
 }
