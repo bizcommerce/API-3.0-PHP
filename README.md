@@ -21,7 +21,7 @@ Por envolver a interface de usuário da aplicação, o SDK funciona apenas como 
 
 ## Dependências
 
-* PHP >= 5.6
+* PHP >= 7.1
 
 ## Instalando o SDK
 

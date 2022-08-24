@@ -65,7 +65,7 @@ class Items implements \JsonSerializable, CieloSerializable
     /**
      * @return array
     */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return get_object_vars($this);
     }
